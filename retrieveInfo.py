@@ -51,13 +51,19 @@ def retrieveInfo(df, query):
             if float(row[day].values[0]) >= Y and float(row[day].values[0]) <= Z: return day
     if intent == 'next day that X is Y':
         X = query['X']
-        try: Y = float(query['Y'])
+        y_number = False
+        try: 
+            Y = float(query['Y'])
+            y_number = True
         except: Y = query['Y']
         # find the row in df['Metric'] that matches X
         row = df.loc[df['Metric'] == X]
         # find the column where the value is Y
         for day in df.columns[1:]:
-            if float(row[day].values[0]) == Y: return day
+            if y_number:
+                if float(row[day].values[0]) == Y: return day
+            else:
+                if row[day].values[0] == Y: return day
     if intent == 'today X at least Y':
         X = query['X']
         Y = float(query['Y'])
@@ -97,7 +103,10 @@ def retrieveInfo(df, query):
         else: return 'no'
     if intent == 'today X is Y':
         X = query['X']
-        try: Y = float(query['Y'])
+        y_number = False
+        try: 
+            Y = float(query['Y'])
+            y_number = True
         except: Y = query['Y']
         # find the row in df['Metric'] that matches X
         row = df.loc[df['Metric'] == X]
@@ -106,8 +115,12 @@ def retrieveInfo(df, query):
         if 'PM' in df.columns[1]: values = row[df.columns[1:3]].values[0]
         if 'Night' in df.columns[1]: values = row[df.columns[1:2]].values[0]
         # check if the value is Y
-        if any([float(value) == Y for value in values]): return 'yes'
-        else: return 'no'
+        if y_number:
+            if any([float(value) == Y for value in values]): return 'yes'
+            else: return 'no'
+        else:
+            if any([value == Y for value in values]): return 'yes'
+            else: return 'no'
     if intent == 'tomorrow X at least Y':
         X = query['X']
         Y = float(query['Y'])

@@ -51,7 +51,7 @@ def extract_forecast_table(soup):
         if "wave height" in label.lower():
             # Extract wave height values
             values = [cell.find(class_="swell-icon__val").get_text(strip=True) for cell in row.find_all("td")]
-            data.append(["Wave Height"] + values)
+            data.append(["Wave Height (m)"] + values)
 
             # Extract wave direction values
             directions = [cell.find(class_="swell-icon__letters").get_text(strip=True) for cell in row.find_all("td")]
@@ -59,11 +59,15 @@ def extract_forecast_table(soup):
         elif "wind(km/h)" in label.lower():
             # Extract wind speed values
             values = [cell.find(class_="wind-icon__val").get_text(strip=True) for cell in row.find_all("td")]
-            data.append(["Wind Speed"] + values)
+            data.append(["Wind Speed (km/h)"] + values)
 
             # Extract wind direction values
             directions = [cell.find(class_="wind-icon__letters").get_text(strip=True) for cell in row.find_all("td")]
             data.append(["Wind Direction"] + directions)
+        elif "energy" in label.lower():
+            # Extract energy values
+            values = [cell.get_text(strip=True) for cell in row.find_all("td")]
+            data.append(["Energy (kJ)"] + values)
         else:
             # Extract other metrics normally
             values = [cell.get_text(strip=True) for cell in row.find_all("td")]
@@ -79,3 +83,10 @@ def extract_forecast_table(soup):
 if __name__ == "__main__":
     forecast_df = extract_forecast_table(soup)
     print(forecast_df)
+    # save as csv
+    forecast_df.to_csv("forecast_data.csv", index=False)
+    # save as json
+    forecast_df.to_json("forecast_data.json", orient="records")
+    # save as txt
+    with open("forecast_data.txt", "w") as f:
+        f.write(forecast_df.to_string(index=False))
