@@ -62,9 +62,9 @@ class TelegramBot:
         self.application.add_handler(message_handler)
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        # await context.bot.send_message(chat_id=update.effective_chat.id, text="Hi, my name is Perrito Jamón! 🐶🍖")
-        # await context.bot.send_message(chat_id=update.effective_chat.id, text="At the moment, I can tell you about the surf forecast in Bajamar-El Lobo. Ask me anything!")
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="Ready!")
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Hi, I'm the surf forecast bot!")
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="At the moment, I can tell you about the surf forecast in Bajamar (El Lobo). Ask me anything!")
+        # await context.bot.send_message(chat_id=update.effective_chat.id, text="Ready!")
 
     async def handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         print("Message received: " + update.message.text)
