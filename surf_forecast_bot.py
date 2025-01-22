@@ -10,7 +10,7 @@ import json
 import typing_extensions as typing
 
 from surfscarper import extract_forecast_table
-from retrieveInfo import retrieveInfo
+from retrieveInfo import retrieveInfo\
 
 class Response(typing.TypedDict):
     intent: str
@@ -67,12 +67,12 @@ class TelegramBot:
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Ready!")
 
     async def handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        print("Message received: " + update.message.text)
         prompt = self.prompt.format(intents_list=self.intents_list, question=update.message.text, categories=self.categories, days=self.days)
-
         response = self.gemini.generate_content(prompt, 
                                                 generation_config=genai.GenerationConfig(response_mime_type="application/json", response_schema=Response),)
-        # await context.bot.send_message(chat_id=update.effective_chat.id, text=response.text)
         query = json.loads(response.text)
+        print("Query: " + str(query))
 
         if query['intent'] == 'other' and self.last_question is not None:
             prompt = "The user's last question was: " + self.last_question + ". Now they are asking a follow-up question: " + update.message.text \
@@ -86,10 +86,10 @@ class TelegramBot:
             await context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't get that. I only know about the surf forecast.\
                                             If you asked something about the forecast, please try rephrasing your question.")
         else:
-            await context.bot.send_message(chat_id=update.effective_chat.id, text="Query: " + str(query))
+            print("Query: " + str(query))
 
             answer = retrieveInfo(self.forecast, query)
-            await context.bot.send_message(chat_id=update.effective_chat.id, text="Answer: " + str(answer))
+            print("Answer: " + str(answer))
 
             prompt = "It has been found that the answer to the user's question " + update.message.text + " is: " + str(answer) + ". Communicate this answer to the user."
             text = self.gemini.generate_content(prompt).text
