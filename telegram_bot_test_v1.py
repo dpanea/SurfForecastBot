@@ -74,7 +74,7 @@ class TelegramBot:
         # await context.bot.send_message(chat_id=update.effective_chat.id, text=response.text)
         query = json.loads(response.text)
 
-        if query['intent'] == 'other':
+        if query['intent'] == 'other' and self.last_question is not None:
             prompt = "The user's last question was: " + self.last_question + ". Now they are asking a follow-up question: " + update.message.text \
                 + ". Given the last question and the new question and " + prompt
             
@@ -83,7 +83,8 @@ class TelegramBot:
             query = json.loads(response.text)
 
         if query['intent'] == 'other':
-            await context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't get that. Please try rephrasing your question.")
+            await context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't get that. I only know about the surf forecast.\
+                                            If you asked something about the forecast, please try rephrasing your question.")
         else:
             await context.bot.send_message(chat_id=update.effective_chat.id, text="Query: " + str(query))
 
@@ -102,7 +103,7 @@ class TelegramBot:
 
 if __name__ == '__main__':
     load_dotenv()  # take environment variables from .env
-    BOT_KEY = os.environ.get("PERRITO_JAMON_BOT_API_KEY")
+    BOT_KEY = os.environ.get("SURF_FORECAST_BOT_API_KEY")
     GEMINI_KEY = os.environ.get("GEMINI_API_KEY")
 
     bot = TelegramBot(BOT_KEY, GEMINI_KEY)
