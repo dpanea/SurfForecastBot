@@ -1,0 +1,20 @@
+{
+    "intents": [
+        "next day that X at least Y",
+        "next day that X at most Y",
+        "next day that X between Y and Z",
+        "next day that X is Y",
+        "today X at least Y",
+        "today X at most Y",
+        "today X between Y and Z",
+        "today X is Y",
+        "tomorrow X at least Y",
+        "tomorrow X at most Y",
+        "tomorrow X between Y and Z",
+        "tomorrow X is Y",
+        "what is X at time Y",
+        "what is X today?",
+        "what is X tomorrow?",
+        "other"
+    ]
+}

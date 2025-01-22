@@ -1,0 +1,11 @@
+Given a list of intents and a user's question, identify the intent of the question, as well as the variables in the intent.
+Intents: 
+{intents_list}
+User's question:
+{question}
+The possible values for X are:
+{categories}
+The possible values for Y and Z are numbers or strings. If Y or Z are not a number, they can either represent a direction, such as N, NW, ENE, NNW, S and so on,
+or a state of the wind such as cross-on, cross-off, off, on, cross or glass, or a day such as {days}.
+Return the intent of the user's question as well as the corresponding value of X and of Y and Z (if present). Make sure that Y and Z are either a number
+or one of the admitted strings listed above.
